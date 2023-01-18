@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <title>Cadastro Pessoa</title>
+</head>
+<body>
+    <header>
+		<nav class="navbar navbar-expand-lg bg-light">
+			<div class="container-fluid">
+				<h4>Dados da Pessoa</h4>
+			</div>
+		</nav>
+	</header>
+    <br>
+    <form class="row g-3 needs-validation" id="form_dados" name="form_dados" novalidate>
+        <div class="col-md-2">
+            <label for="validationCustom01" class="form-label">ID</label>
+            <input type="text" class="form-control" id="id"  disabled>
+          </div>
+        <div class="col-md-6">
+          <label for="validationCustom01" class="form-label">Nome Completo</label>
+          <input type="text" class="form-control" id="nome"  required>
+        </div>
+        <div class="col-md-4">
+            <label for="exampleFormControlInput1" class="form-label">Email</label>
+          <div class="input-group has-validation">
+            <input type="email" class="form-control" id="email" placeholder="name@example.com">
+          </div>
+        </div>
+        <div class="col-md-3">
+            <label for="validationCustom04" class="form-label">Tipo de pessoa</label>
+            <select name="Tipo" class="form-select" id="Tipo" required>
+                <option selected value="fisica">Pessoa Física</option>
+                <option value="juridica">Pessoa Jurídica</option>
+              </select>
+        </div>
+        <div class="col-md-3 cpf">
+            <label for="validationCustom05" class="form-label">CPF</label>
+            <input type="text" class="form-control control" id="cpf" name="cpf" onBlur="ValidarCPF(form_dados.cpf);" maxlength="14" required>
+        </div>
+        <div class="col-md-3 cnpj">
+            <label for="validationCustom05" class="form-label">CNPJ</label>
+            <input type="text" class="form-control control" id="cnpj" name="cnpj" onBlur="ValidarCNPJ(form_dados.cnpj);" maxlength="18" required>
+        </div>
+        <div class="col-md-3">
+          <label for="validationCustom05" class="form-label">CEP</label>
+          <input type="text" class="form-control control" id="cep" onkeypress="$(this).mask('00.000-000')" required>
+        </div>
+        <div class="col-md-3">
+            <label for="validationCustom05" class="form-label">Endereço</label>
+            <input type="text" class="form-control" id="endereco" disabled>
+        </div>
+        <div class="col-md-3">
+            <label for="validationCustom05" class="form-label">Bairro</label>
+            <input type="text" class="form-control" id="bairro" disabled>
+        </div>
+        <div class="col-md-3">
+            <label for="validationCustom05" class="form-label">Cidade</label>
+            <input type="text" class="form-control" id="cidade" disabled>
+        </div>
+        <div class="col-md-3">
+            <label for="validationCustom05" class="form-label">UF</label>
+            <input type="text" class="form-control" id="uf" disabled>
+        </div>
+        <div class="btn-style text-center"> 
+         	<br>
+            <button type="button"  class="btn btn-secondary" onclick="document.getElementById('form_dados').reset()">Limpar</button> 
+            <button type="submit"  class="btn btn-success btn" onclick="salvarUsuario()">Cadastrar</button> 
+            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalPesquisar">Pesquisar</button> 
+            <button type="button" class="btn btn-danger" onclick="btnDeletar()">Excluir</button>
+        </div>
+      </form>
+      <br><br>
+	  <div class="img"><img src="img/logo-nexum.png" alt="Logo nexum"></div>
+
+
+
+
+	<!-- Modal Pesquisa  -->
+	<div class="modal fade" id="modalPesquisar" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">Pesquisar</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="mb-3">
+							<label for="nameBusca" class="col-form-label">Nome:</label> 
+							<input type="text" class="form-control" id="nameBusca">
+						</div>
+						<button type="button" class="btn btn-success" onclick="pesquisaPessoa()">Buscar</button>
+					</form>
+					<table class="table" id="tabelaResultados">
+						<thead>
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col">Nome</th>
+								<th scope="col">Email</th>
+								<th scope="col">CPF</th>
+								<th scope="col">Editar</th>
+								<th scope="col">Excluir</th>
+							</tr>
+						</thead>
+						<tbody>
+							
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">Fechar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- JQuery and JavaScript  -->
+    <script>
+    function pesquisaPessoa(){
+    	var nome = $('#nameBusca').val();
+    	
+    	if (nome != null && nome.trim() != ''){
+    		$.ajax({
+        		method: "GET",
+        		url: "buscarPorNome",
+        		data: "name= " + nome,
+        		success: function(response){
+        			$('#tabelaResultados > tbody > tr').remove();
+        			
+        			for (var i =0; i<response.length; i++){
+        				$('#tabelaResultados > tbody').append('<tr id ='+response[i].id+'><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td>'+response[i].email+'</td><td>'+response[i].cpf+'</td><td><button type="button" class="btn btn-warning" onclick="colocarEmEditar('+response[i].id+')">Ver</button></td><td><button type="button" class="btn btn-danger" onclick="deletar('+response[i].id+')">Excluir</button></td></tr>');
+        			}
+        		}
+        	}).fail(function(xhr, status,errorThrown){
+        		alert("Erro ao buscar: " + xhr.responseText);
+        	});
+    	}
+    }
+    
+    function btnDeletar(){
+    	var id = $('#id').val();
+    	
+    	if(id != null && id.trim() != ''){
+	    	deletar(id);
+	    	document.getElementById('form_dados').reset();
+    	}
+    }
+    
+    function deletar(id){
+    	if (confirm('Deseja realmente deletar?')){
+	    	$.ajax({
+	    		method: "DELETE",
+	    		url: "delete",
+	    		data: "idpessoa= " + id,
+	    		success: function(response){
+	    			$('#' + id).remove();
+	    			alert(response);
+	    		}
+	    	}).fail(function(xhr, status,errorThrown){
+	    		alert("Erro ao excluir por Id: " + xhr.responseText);
+	    	});
+    	}
+    }
+    
+    function colocarEmEditar(id){
+    	$.ajax({
+    		method: "GET",
+    		url: "buscarid",
+    		data: "idpessoa= " + id,
+    		success: function(response){
+    			$("#id").val(response.id);
+    	    	$("#nome").val(response.nome);
+    	    	$("#email").val(response.email);
+    	    	$("#cpf").val(response.cpf);
+    	    	$("#cep").val(response.cep);
+    	    	$("#endereco").val(response.endereco);
+    	    	$("#bairro").val(response.bairro);
+    	    	$("#cidade").val(response.cidade);
+    	    	$("#uf").val(response.uf);
+    	    	
+    	    	$('#modalPesquisar').modal('hide');
+    		}
+    	}).fail(function(xhr, status,errorThrown){
+    		alert("Erro ao buscar por Id: " + xhr.responseText);
+    	});
+    }
+    
+    function salvarUsuario(){
+    	var id = $("#id").val();
+    	var nome = $("#nome").val();
+    	var email = $("#email").val();
+    	var cpf = $("#cpf").val();
+    	var cep = $("#cep").val();
+    	var endereco = $("#endereco").val();
+    	var bairro = $("#bairro").val();
+    	var cidade = $("#cidade").val();
+    	var uf = $("#uf").val();
+    	
+    	if (nome == null || nome != null && nome.trim() == ''){
+    		$( "#nome" ).focus();
+    		alert('Informe um nome');
+    		return;
+    	}
+    	
+    	if (email == null || email != null && email.trim() == ''){
+    		$( "#email" ).focus();
+    		alert('Informe um email');
+    		return;
+    	}
+    	if (cpf == null || cpf != null && cpf.trim() == ''){
+    		$( "#cpf" ).focus();
+    		alert('Informe um cpf');
+    		return;
+    	}
+    	if (cep == null || cep != null && cep.trim() == ''){
+    		$( "#cep" ).focus();
+    		alert('Informe um cep');
+    		return;
+    	}
+	    	$.ajax({
+	    		method: "POST",
+	    		url: "salvar",
+	    		data: JSON.stringify({id:id, nome:nome, email:email, cpf:cpf, cep:cep, endereco:endereco, bairro:bairro, cidade:cidade, uf:uf}),
+	    		contentType: "application/json; charset-utf-8",
+	    		success: function(response){
+	    			$("#id").val(response.id);
+	    			alert("Salvo com sucesso! ")
+	    		}
+	    	}).fail(function(xhr, status,errorThrown){
+	    		alert("Erro ao salvar: " + xhr.responseText);
+	    	});
+    	
+    }
+    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.6.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vsilva472/jquery-viacep/dist/jquery-viacep.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/jquery.mask.js"></script>
+    <script src="js/consulta_cep.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+</body>
+</html>

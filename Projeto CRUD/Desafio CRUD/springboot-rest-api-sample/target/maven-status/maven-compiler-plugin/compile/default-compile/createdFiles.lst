@@ -1,0 +1,4 @@
+br\com\springboot\crud_nexum\model\Pessoa.class
+br\com\springboot\crud_nexum\repository\PessoaRepository.class
+br\com\springboot\crud_nexum\controllers\GreetingsController.class
+br\com\springboot\crud_nexum\Application.class
