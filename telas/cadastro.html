@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <title>Cadastro Pessoa</title>
+</head>
+<body>
+    <header>
+		<nav class="navbar navbar-expand-lg bg-light">
+			<div class="container-fluid">
+				<h4>Dados da Pessoa</h4>
+			</div>
+		</nav>
+	</header>
+    <br>
+    <form class="row g-3 needs-validation" id="form_dados" name="form_dados" novalidate>
+        <div class="col-md-2">
+            <label for="validationCustom01" class="form-label">ID</label>
+            <input type="text" class="form-control" id="validationCustom01"  disabled>
+          </div>
+        <div class="col-md-6">
+          <label for="validationCustom01" class="form-label">Nome Completo</label>
+          <input type="text" class="form-control" id="validationCustom01"  required>
+        </div>
+        <div class="col-md-4">
+            <label for="exampleFormControlInput1" class="form-label">Email</label>
+          <div class="input-group has-validation">
+            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+          </div>
+        </div>
+        <div class="col-md-3">
+            <label for="validationCustom04" class="form-label">Tipo de pessoa</label>
+            <select name="Tipo" class="form-select" id="Tipo" required>
+                <option selected value="fisica">Pessoa Física</option>
+                <option value="juridica">Pessoa Jurídica</option>
+              </select>
+        </div>
+        <div class="col-md-3 cpf">
+            <label for="validationCustom05" class="form-label">CPF</label>
+            <input type="text" class="form-control control" id="cpf" name="cpf" onBlur="ValidarCPF(form_dados.cpf);" maxlength="14" required>
+        </div>
+        <div class="col-md-3 cnpj">
+            <label for="validationCustom05" class="form-label">CNPJ</label>
+            <input type="text" class="form-control control" id="cnpj" name="cnpj" onBlur="ValidarCNPJ(form_dados.cnpj);" maxlength="18" required>
+        </div>
+        <div class="col-md-3">
+          <label for="validationCustom05" class="form-label">CEP</label>
+          <input type="text" class="form-control control" id="cep" onkeypress="$(this).mask('00.000-000')" required>
+        </div>
+        <div class="col-md-3">
+            <label for="validationCustom05" class="form-label">Endereço</label>
+            <input type="text" class="form-control" id="endereco" disabled>
+        </div>
+        <div class="col-md-3">
+            <label for="validationCustom05" class="form-label">Bairro</label>
+            <input type="text" class="form-control" id="bairro" disabled>
+        </div>
+        <div class="col-md-3">
+            <label for="validationCustom05" class="form-label">Cidade</label>
+            <input type="text" class="form-control" id="cidade" disabled>
+        </div>
+        <div class="col-md-3">
+            <label for="validationCustom05" class="form-label">UF</label>
+            <input type="text" class="form-control" id="uf" disabled>
+        </div>
+        <div class="btn-style text-center"> 
+            <button type="reset"  class="btn btn-secondary">Limpar</button>
+             <button type="submit"  class="btn btn-success btn">Cadastrar</button>
+            <button type="button" class="btn btn-info">Pesquisar</button>
+        </div>
+      </form>
+      <div class="img"><img src="logo-nexum.png" alt="Logo nexum"></div>
+
+    <!-- JQuery and JavaScript  -->
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.6.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vsilva472/jquery-viacep/dist/jquery-viacep.min.js"></script>
+    <script src="script.js"></script>
+    <script src="jquery.mask.js"></script>
+    <script src="consulta_cep.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+</body>
+</html>
